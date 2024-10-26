@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'db.php';
 include 'verificar_rol.php';
 verificarPermiso(['admin']); // Solo el admin puede asignar permisos
@@ -18,7 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $conn->query($sql_insert);
     }
 
-    echo "Permisos actualizados para el rol $rol.";
+    // Redirección para evitar reenvíos del formulario y confirmar el cambio
+    header("Location: asignar_permisos.php?success=1");
+    exit();
 }
 
 // Obtener las ventanas que ya tienen permisos asignados para cada rol
@@ -46,6 +49,11 @@ $ventanasContador = obtenerVentanasAsignadas('contador');
 </head>
 <body>
     <h1>Asignar Permisos a Roles</h1>
+    
+    <!-- Mensaje de confirmación al guardar permisos -->
+    <?php if (isset($_GET['success'])): ?>
+        <p style="color: green;">Permisos actualizados correctamente.</p>
+    <?php endif; ?>
 
     <!-- Formulario para asignar permisos al Vendedor -->
     <form method="POST" action="">

@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $total_general = $_POST['total_general'];
 
     if (empty($productos) || $total_general <= 0) {
-        echo "Error: No se pueden procesar ventas sin productos o con un total inválido.";
+        echo "";
         exit();
     }
 
@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                        VALUES (?, ?, ?, ?)");
 
         foreach ($productos as $producto) {
-            $producto_id = $producto['id'];
+            $producto_id = $producto['id']; // Asegúrate de que este es el ID correcto
             $cantidad = $producto['cantidad'];
             $precio_unitario = $producto['precio_unitario'];
 
@@ -62,6 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $consulta_producto->execute();
             $resultado_producto = $consulta_producto->get_result();
 
+            // Aquí puedes depurar para ver el ID que se está verificando
             if ($resultado_producto->num_rows === 0) {
                 echo "Error: El producto con ID $producto_id no existe en la base de datos.";
                 exit();

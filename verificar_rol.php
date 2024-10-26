@@ -1,15 +1,13 @@
 <?php
-function verificarPermiso($rolesPermitidos) {
+// Verifica si la sesión ya está iniciada antes de llamar a session_start()
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
-    if (!isset($_SESSION['rol'])) {
-        // Redirigir al login si el rol no está definido
-        header("Location: login.php");
-        exit();
-    }
+}
 
-    // Verificar si el rol del usuario está en la lista de roles permitidos
-    if (!in_array($_SESSION['rol'], $rolesPermitidos)) {
-        echo "No tienes permisos para acceder a esta página.";
+// Función para verificar el rol y los permisos
+function verificarPermiso($rolesPermitidos) {
+    if (!isset($_SESSION['usuario']) || !in_array($_SESSION['rol'], $rolesPermitidos)) {
+        echo "No tienes permisos para acceder a esta sección.";
         exit();
     }
 }
